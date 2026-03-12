@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐰 La Chasse aux Œufs Zen – Zen Attitude 59</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sage: #7a9e7e;
+  --sage-light: #c8deca;
+  --sage-dark: #4a6b4e;
+  --cream: #f0f7f1;
+  --warm: #f5e9d8;
+  --gold: #c9a96e;
+  --gold-light: #f0d898;
+  --deep: #2d3a2e;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Nunito',sans-serif; background:var(--cream); min-height:100vh; overflow-x:hidden; }
+
+.screen { display:none; position:relative; z-index:1; min-height:100vh; flex-direction:column; align-items:center; justify-content:center; padding:1.5rem 1rem; animation:fadeUp .5s ease; }
+.screen.active { display:flex; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
+.brand { font-family:'Playfair Display',serif; font-size:1.05rem; color:var(--sage-dark); letter-spacing:.12em; text-transform:uppercase; text-align:center; }
+.brand-sub { font-size:.72rem; color:var(--sage); letter-spacing:.08em; font-weight:700; text-align:center; }
+
+/* ── INTRO ── */
+.big-bunny { font-size:clamp(5rem,17vw,8rem); animation:bBounce 1.4s ease-in-out infinite; margin:.8rem 0; text-align:center; filter:drop-shadow(0 8px 18px rgba(0,0,0,.12)); }
+@keyframes bBounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
+.intro-title { font-family:'Playfair Display',serif; font-size:clamp(1.9rem,6vw,2.9rem); color:var(--deep); text-align:center; line-height:1.2; margin-bottom:.6rem; }
+.intro-title em { color:var(--sage); font-style:italic; }
+.intro-sub { text-align:center; font-size:.97rem; color:#555; max-width:380px; line-height:1.65; margin-bottom:1.4rem; }
+.reward-badge { background:linear-gradient(135deg,var(--gold),#e0be70); color:white; padding:.55rem 1.5rem; border-radius:50px; font-weight:800; font-size:.93rem; margin-bottom:1.8rem; box-shadow:0 4px 16px rgba(201,169,110,.4); animation:glow 2s ease-in-out infinite; }
+@keyframes glow { 0%,100%{box-shadow:0 4px 16px rgba(201,169,110,.4)} 50%{box-shadow:0 4px 28px rgba(201,169,110,.7)} }
+
+/* ── MAP ── */
+#screen-map {
+  padding:.6rem .5rem 1.2rem;
+  background: linear-gradient(180deg,
+    #c5e8f7 0%,       /* sky */
+    #d4eebb 28%,      /* light meadow */
+    #b8d4a0 58%,      /* deeper green */
+    #8aaa68 80%,      /* forest floor */
+    #6a8a50 100%);    /* deep ground */
+  justify-content:flex-start;
+}
+.map-header { text-align:center; padding:.4rem 0 .5rem; }
+.map-header h2 { font-family:'Playfair Display',serif; font-size:clamp(1rem,4vw,1.3rem); color:var(--deep); }
+.map-hint { font-size:.73rem; color:rgba(45,58,46,.8); font-weight:700; margin-top:.15rem; }
+
+.map-scene {
+  position:relative;
+  width:100%;
+  max-width:390px;
+  aspect-ratio: 390/640;
+  margin:0 auto;
+  flex-shrink:0;
+}
+
+.map-svg { position:absolute; inset:0; width:100%; height:100%; overflow:visible; }
+
+/* STOPS */
+.stop {
+  position:absolute;
+  transform:translate(-50%,-50%);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:3px;
+  z-index:10;
+  cursor:default;
+}
+.stop-bubble {
+  width:clamp(50px,13vw,64px);
+  height:clamp(50px,13vw,64px);
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:3px solid transparent;
+  font-size:clamp(1.3rem,3.8vw,1.7rem);
+  transition:all .3s;
+  position:relative;
+}
+.stop-label {
+  font-size:clamp(.58rem,1.7vw,.7rem);
+  font-weight:800;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  color:var(--deep);
+  background:rgba(255,255,255,.8);
+  border-radius:6px;
+  padding:2px 6px;
+  white-space:nowrap;
+  box-shadow:0 1px 4px rgba(0,0,0,.1);
+}
+
+.stop.done .stop-bubble   { background:var(--sage); border-color:var(--sage-dark); box-shadow:0 3px 10px rgba(74,107,78,.4); }
+.stop.active .stop-bubble { background:white; border-color:var(--gold); cursor:pointer; animation:nodeGlow 1.3s ease-in-out infinite; }
+.stop.locked .stop-bubble { background:rgba(255,255,255,.45); border-color:rgba(255,255,255,.5); filter:saturate(.3); opacity:.6; }
+.stop.start-stop .stop-bubble { background:linear-gradient(135deg,#fff9ee,#ffefc4); border-color:var(--gold); box-shadow:0 3px 10px rgba(201,169,110,.35); }
+
+@keyframes nodeGlow { 0%,100%{box-shadow:0 4px 16px rgba(201,169,110,.5)} 50%{box-shadow:0 4px 26px rgba(201,169,110,.9)} }
+
+/* tooltip on active */
+.stop.active::before {
+  content:"👆 Clique ici !";
+  position:absolute;
+  top:-30px;
+  left:50%;
+  transform:translateX(-50%);
+  background:var(--gold);
+  color:white;
+  font-size:.65rem;
+  font-weight:800;
+  padding:3px 8px;
+  border-radius:9px;
+  white-space:nowrap;
+  box-shadow:0 2px 8px rgba(201,169,110,.5);
+  animation:tipBounce 1s ease-in-out infinite;
+  z-index:30;
+}
+.stop.active::after {
+  content:"";
+  position:absolute;
+  top:-9px;
+  left:50%;
+  transform:translateX(-50%);
+  border:5px solid transparent;
+  border-top-color:var(--gold);
+  z-index:30;
+}
+@keyframes tipBounce {
+  0%,100%{transform:translateX(-50%) translateY(0)}
+  50%{transform:translateX(-50%) translateY(-4px)}
+}
+
+/* bunny */
+.map-bunny {
+  position:absolute;
+  font-size:clamp(1.5rem,4.8vw,2rem);
+  transform:translate(-50%,-50%);
+  z-index:20;
+  filter:drop-shadow(0 4px 8px rgba(0,0,0,.2));
+  animation:bFloat 1s ease-in-out infinite;
+  transition:left .85s cubic-bezier(.34,1.56,.64,1), top .85s cubic-bezier(.34,1.56,.64,1);
+  pointer-events:none;
+}
+@keyframes bFloat { 0%,100%{transform:translate(-50%,-50%) scale(1)} 50%{transform:translate(-50%,calc(-50% - 6px)) scale(1.07)} }
+
+/* progress */
+.prog-wrap { width:100%; max-width:350px; margin:.5rem auto 0; }
+.prog-track { background:rgba(255,255,255,.35); border-radius:10px; height:7px; overflow:hidden; }
+.prog-fill { background:linear-gradient(90deg,var(--sage),var(--gold)); height:100%; border-radius:10px; transition:width .6s ease; }
+.prog-label { text-align:center; font-size:.7rem; color:var(--deep); font-weight:700; margin-top:.3rem; opacity:.75; }
+
+/* ── QUESTION ── */
+.q-card { background:white; border-radius:22px; padding:1.8rem 1.5rem; max-width:440px; width:100%; box-shadow:0 12px 40px rgba(0,0,0,.1); border:1px solid rgba(122,158,126,.18); }
+.q-progress { text-align:right; font-size:.78rem; color:var(--sage); font-weight:800; margin-bottom:.8rem; }
+.q-egg { font-size:2.5rem; text-align:center; display:block; margin-bottom:.5rem; animation:eggWig 2s ease-in-out infinite; }
+@keyframes eggWig { 0%,100%{transform:rotate(-6deg)} 50%{transform:rotate(6deg)} }
+.q-zone-banner { font-size:.82rem; font-weight:700; color:white; padding:.3rem .9rem; border-radius:20px; display:inline-block; margin-bottom:.8rem; }
+.q-text { font-family:'Playfair Display',serif; font-size:clamp(1.05rem,3.5vw,1.25rem); color:var(--deep); text-align:center; line-height:1.45; margin-bottom:1.3rem; }
+.q-opts { display:flex; flex-direction:column; gap:.6rem; }
+.q-opt { background:var(--warm); border:2px solid transparent; border-radius:13px; padding:.75rem 1rem; font-family:'Nunito',sans-serif; font-size:.9rem; font-weight:700; color:var(--deep); cursor:pointer; transition:all .2s; text-align:left; display:flex; align-items:center; gap:.7rem; }
+.q-opt:hover { background:var(--sage-light); border-color:var(--sage); transform:translateX(4px); }
+.q-opt.selected { background:var(--sage); border-color:var(--sage-dark); color:white; }
+.opt-e { font-size:1.25rem; }
+.q-fb { display:none; text-align:center; font-size:.9rem; font-weight:700; padding:.7rem; border-radius:11px; margin-top:.8rem; }
+.q-fb.good { display:block; background:#e8f5e9; color:var(--sage-dark); }
+.q-fb.fun  { display:block; background:var(--warm); color:#a0693a; }
+
+/* ── FINAL ── */
+#screen-final { background:linear-gradient(160deg,var(--sage-dark),var(--deep)); color:white; }
+.confetti { font-size:3.5rem; animation:spin 2.2s linear infinite; display:block; text-align:center; margin-bottom:.6rem; }
+@keyframes spin { from{transform:rotate(0)} to{transform:rotate(360deg)} }
+.final-title { font-family:'Playfair Display',serif; font-size:clamp(2rem,7vw,2.9rem); text-align:center; line-height:1.2; margin-bottom:.4rem; }
+.final-sub { text-align:center; opacity:.8; font-size:.95rem; margin-bottom:1.5rem; }
+.promo-reveal { background:rgba(255,255,255,.1); border:2px dashed rgba(255,255,255,.4); border-radius:22px; padding:1.5rem 1.8rem; text-align:center; max-width:310px; width:100%; backdrop-filter:blur(10px); margin-bottom:1.1rem; animation:promoIn .8s cubic-bezier(.34,1.56,.64,1); }
+@keyframes promoIn { from{opacity:0;transform:scale(.7)} to{opacity:1;transform:scale(1)} }
+.promo-label { font-size:.75rem; letter-spacing:.13em; text-transform:uppercase; opacity:.65; margin-bottom:.35rem; }
+.promo-code { font-family:'Playfair Display',serif; font-size:clamp(2.2rem,8vw,3rem); font-weight:700; letter-spacing:.12em; color:var(--gold-light); text-shadow:0 2px 14px rgba(255,215,0,.45); }
+.promo-desc { font-size:.9rem; opacity:.85; margin-top:.4rem; }
+.promo-valid { font-size:.72rem; opacity:.5; margin-top:.25rem; }
+.copy-btn { background:rgba(255,255,255,.15); color:white; border:1px solid rgba(255,255,255,.3); padding:.4rem 1.1rem; border-radius:18px; font-size:.78rem; font-weight:700; cursor:pointer; margin-top:.6rem; transition:all .2s; }
+.copy-btn:hover { background:rgba(255,255,255,.27); }
+.eggs-row { display:flex; gap:.4rem; justify-content:center; margin:.6rem 0; }
+.eggs-row span { font-size:1.4rem; opacity:0; transform:scale(0); transition:opacity .3s,transform .3s; }
+.eggs-row span.lit { opacity:1; transform:scale(1); }
+.btn-primary { background:linear-gradient(135deg,var(--sage),var(--sage-dark)); color:white; border:none; padding:.95rem 2.2rem; border-radius:50px; font-family:'Nunito',sans-serif; font-size:.97rem; font-weight:800; cursor:pointer; box-shadow:0 6px 20px rgba(74,107,78,.4); transition:all .2s; }
+.btn-primary:hover { transform:translateY(-2px); }
+.btn-white { background:white; color:var(--sage-dark); border:none; padding:.9rem 2rem; border-radius:50px; font-family:'Nunito',sans-serif; font-size:.93rem; font-weight:800; cursor:pointer; box-shadow:0 6px 20px rgba(0,0,0,.15); transition:all .2s; margin-top:.5rem; }
+.btn-white:hover { transform:translateY(-2px); }
+</style>
+</head>
+<body>
+
+<!-- ══ INTRO ══ -->
+<div id="screen-intro" class="screen active">
+  <div class="brand">Zen Attitude</div>
+  <div class="brand-sub">59 · Salon de massage</div>
+  <div class="big-bunny">🐰</div>
+  <h1 class="intro-title">La Chasse aux<br><em>Œufs Zen</em></h1>
+  <p class="intro-sub">Notre petit lapin part en balade printanière ! Suis son chemin de case en case, réponds à ses questions et débloque ta récompense 🌸</p>
+  <div class="reward-badge">🎁 Jusqu'à 10% de réduction sur ton prochain soin</div>
+  <button class="btn-primary" onclick="startGame()">🐣 Suivre le lapin !</button>
+</div>
+
+<!-- ══ MAP ══ -->
+<div id="screen-map" class="screen">
+  <div class="map-header">
+    <div class="brand" style="color:var(--deep)">Zen Attitude 59</div>
+    <h2>Le chemin du lapin 🐰</h2>
+    <p class="map-hint" id="map-hint">Clique sur la case dorée pour avancer ✨</p>
+  </div>
+
+  <div class="map-scene" id="map-scene">
+    <!--
+      LAYOUT (viewBox 390×640, top→bottom):
+      Le lapin part du HAUT et descend en zigzag :
+
+      DÉPART (top-center)   →  x=195, y=48
+         ↘ courbe droite
+      FORÊT (right)         →  x=305, y=155
+         ↙ courbe gauche
+      PRÉ FLEURI (left)     →  x=85,  y=278
+         ↘ courbe droite
+      FONTAINE (right)      →  x=305, y=395
+         ↙ courbe gauche
+      NID SECRET (left)     →  x=85,  y=510
+         ↘ courbe droite
+      ARRIVÉE (bottom-right)→  x=285, y=600
+    -->
+    <svg class="map-svg" viewBox="0 0 390 640" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stop-color="#c5e8f7"/>
+          <stop offset="30%"  stop-color="#cde9b0"/>
+          <stop offset="65%"  stop-color="#a8ca84"/>
+          <stop offset="100%" stop-color="#6a8a50"/>
+        </linearGradient>
+      </defs>
+      <rect width="390" height="640" fill="url(#bg)"/>
+
+      <!-- ══ SUN & SKY ══ -->
+      <circle cx="355" cy="42" r="28" fill="#ffe066" opacity=".7"/>
+      <circle cx="355" cy="42" r="20" fill="#ffd020" opacity=".8"/>
+      <g stroke="#ffd020" stroke-width="2.5" opacity=".45">
+        <line x1="355" y1="8"  x2="355" y2="2"/>
+        <line x1="355" y1="76" x2="355" y2="82"/>
+        <line x1="321" y1="42" x2="315" y2="42"/>
+        <line x1="389" y1="42" x2="395" y2="42"/>
+        <line x1="331" y1="18" x2="327" y2="14"/>
+        <line x1="379" y1="66" x2="383" y2="70"/>
+        <line x1="379" y1="18" x2="383" y2="14"/>
+        <line x1="331" y1="66" x2="327" y2="70"/>
+      </g>
+      <!-- clouds -->
+      <g opacity=".55">
+        <ellipse cx="55"  cy="38" rx="28" ry="13" fill="white"/>
+        <ellipse cx="38"  cy="42" rx="18" ry="11" fill="white"/>
+        <ellipse cx="74"  cy="42" rx="20" ry="11" fill="white"/>
+        <ellipse cx="185" cy="22" rx="22" ry="10" fill="white"/>
+        <ellipse cx="168" cy="26" rx="14" ry="8"  fill="white"/>
+        <ellipse cx="202" cy="26" rx="16" ry="8"  fill="white"/>
+      </g>
+
+      <!-- ══ ZONE : FORÊT (top-right, around x=305 y=155) ══ -->
+      <!-- big trees -->
+      <ellipse cx="348" cy="128" rx="32" ry="44" fill="#3a7a42" opacity=".88"/>
+      <rect x="344" y="158" width="8" height="20" fill="#6b4226" rx="2"/>
+      <ellipse cx="318" cy="138" rx="26" ry="38" fill="#4a8f52" opacity=".8"/>
+      <rect x="314" y="164" width="7" height="16" fill="#6b4226" rx="2"/>
+      <ellipse cx="370" cy="118" rx="22" ry="32" fill="#2d6635" opacity=".75"/>
+      <!-- small shrubs -->
+      <ellipse cx="290" cy="168" rx="16" ry="12" fill="#56a05e" opacity=".7"/>
+      <ellipse cx="375" cy="162" rx="14" ry="10" fill="#4a8f52" opacity=".65"/>
+      <!-- mushrooms -->
+      <ellipse cx="288" cy="177" rx="8" ry="5"  fill="#d94040" opacity=".85"/>
+      <rect    x="290"  y="177" width="4" height="7" fill="#f0d0b0" rx="1"/>
+      <circle  cx="290" cy="173" r="1.3" fill="white" opacity=".7"/>
+      <circle  cx="294" cy="175" r=".9"  fill="white" opacity=".7"/>
+      <!-- birds -->
+      <path d="M285 95 Q288 92 291 95" stroke="#2d3a2e" stroke-width="1.5" fill="none" opacity=".5"/>
+      <path d="M298 86 Q301 83 304 86" stroke="#2d3a2e" stroke-width="1.5" fill="none" opacity=".5"/>
+
+      <!-- ══ ZONE : PRÉ FLEURI (mid-left, around x=85 y=278) ══ -->
+      <ellipse cx="80" cy="300" rx="72" ry="45" fill="#90c97a" opacity=".5"/>
+      <!-- daisy -->
+      <circle cx="48" cy="272" r="7"  fill="#ffe066"/>
+      <circle cx="48" cy="260" r="4.5" fill="white"/><circle cx="48" cy="284" r="4.5" fill="white"/>
+      <circle cx="36" cy="272" r="4.5" fill="white"/><circle cx="60" cy="272" r="4.5" fill="white"/>
+      <circle cx="39" cy="263" r="3.5" fill="white"/><circle cx="57" cy="263" r="3.5" fill="white"/>
+      <circle cx="39" cy="281" r="3.5" fill="white"/><circle cx="57" cy="281" r="3.5" fill="white"/>
+      <line x1="48" y1="279" x2="46" y2="296" stroke="#5a9e5a" stroke-width="2"/>
+      <!-- tulip -->
+      <path d="M95 264 Q93 254 97 247 Q101 254 99 264 Z" fill="#e84a7a"/>
+      <line x1="97" y1="264" x2="95" y2="290" stroke="#5a9e5a" stroke-width="2"/>
+      <path d="M95 276 Q88 270 89 262 Q96 266 95 276 Z" fill="#6aba6a"/>
+      <!-- small flowers -->
+      <circle cx="118" cy="270" r="5" fill="#ff9ad4"/><circle cx="118" cy="270" r="2"  fill="#ffe066"/>
+      <circle cx="130" cy="280" r="4" fill="#ffd06e"/><circle cx="130" cy="280" r="1.5" fill="#e84a7a"/>
+      <circle cx="68"  cy="285" r="4" fill="#a078f0"/><circle cx="68"  cy="285" r="1.5" fill="white"/>
+      <circle cx="30"  cy="290" r="3" fill="#ff9ad4"/><circle cx="30"  cy="290" r="1"   fill="white"/>
+      <!-- butterfly -->
+      <path d="M138 255 Q130 247 126 255 Q130 259 138 255Z" fill="#f0a0e0" opacity=".8"/>
+      <path d="M138 255 Q146 247 150 255 Q146 259 138 255Z" fill="#f0c0f0" opacity=".8"/>
+      <line x1="138" y1="251" x2="138" y2="260" stroke="#8060a0" stroke-width="1"/>
+
+      <!-- ══ ZONE : FONTAINE (mid-right, around x=305 y=395) ══ -->
+      <ellipse cx="338" cy="418" rx="40" ry="15" fill="#a8d8ea" opacity=".8"/>
+      <ellipse cx="338" cy="416" rx="34" ry="11" fill="#c0e8f4" opacity=".7"/>
+      <rect x="332" y="396" width="11" height="22" rx="4" fill="#c8b89a"/>
+      <ellipse cx="338" cy="396" rx="18" ry="5.5" fill="#d4c8a8"/>
+      <!-- water jets -->
+      <path d="M338 396 Q332 382 326 371" stroke="#a8d8ea" stroke-width="3" fill="none" stroke-linecap="round" opacity=".8"/>
+      <path d="M338 396 Q344 382 350 371" stroke="#a8d8ea" stroke-width="3" fill="none" stroke-linecap="round" opacity=".8"/>
+      <path d="M338 396 Q338 380 338 368" stroke="#c0e8f4" stroke-width="2.5" fill="none" stroke-linecap="round" opacity=".7"/>
+      <circle cx="326" cy="371" r="4" fill="#a8d8ea" opacity=".7"/>
+      <circle cx="350" cy="371" r="4" fill="#a8d8ea" opacity=".7"/>
+      <circle cx="338" cy="366" r="3.5" fill="#c0e8f4" opacity=".7"/>
+      <ellipse cx="338" cy="418" rx="50" ry="6"  fill="none" stroke="#a8d8ea" stroke-width="1.5" opacity=".35"/>
+      <ellipse cx="338" cy="418" rx="60" ry="8"  fill="none" stroke="#a8d8ea" stroke-width="1"   opacity=".2"/>
+      <!-- lily pads -->
+      <ellipse cx="316" cy="424" rx="7" ry="5" fill="#6aba6a" opacity=".75"/>
+      <circle  cx="316" cy="423" r="2"         fill="#ff9ad4" opacity=".7"/>
+      <ellipse cx="356" cy="422" rx="6" ry="4" fill="#6aba6a" opacity=".65"/>
+
+      <!-- ══ ZONE : NID SECRET (lower-left, around x=85 y=510) ══ -->
+      <!-- branch -->
+      <path d="M10 498 Q70 480 155 512 Q175 518 200 510" stroke="#7a5533" stroke-width="11" fill="none" stroke-linecap="round" opacity=".75"/>
+      <path d="M95 488 Q105 470 118 460" stroke="#7a5533" stroke-width="7" fill="none" stroke-linecap="round" opacity=".65"/>
+      <!-- leaves -->
+      <ellipse cx="38"  cy="490" rx="13" ry="7" fill="#4a8f52" opacity=".7"  transform="rotate(-15 38 490)"/>
+      <ellipse cx="80"  cy="478" rx="11" ry="6" fill="#56a05e" opacity=".65" transform="rotate(-25 80 478)"/>
+      <ellipse cx="155" cy="503" rx="12" ry="6" fill="#3d7a45" opacity=".7"  transform="rotate(10 155 503)"/>
+      <!-- nest -->
+      <ellipse cx="85" cy="518" rx="26" ry="11" fill="#b8864a" opacity=".85"/>
+      <path d="M61 516 Q74 505 85 507 Q96 505 109 516" stroke="#8b6030" stroke-width="2.5" fill="none" opacity=".7"/>
+      <path d="M63 512 Q76 502 85 503 Q94 502 107 512" stroke="#a07040" stroke-width="2" fill="none" opacity=".6"/>
+      <!-- eggs in nest -->
+      <ellipse cx="75"  cy="512" rx="7" ry="5" fill="#c8e0f0" opacity=".9"/>
+      <ellipse cx="85"  cy="510" rx="7" ry="5" fill="#f0c8d0" opacity=".9"/>
+      <ellipse cx="95"  cy="512" rx="7" ry="5" fill="#d0f0c0" opacity=".9"/>
+      <circle  cx="75"  cy="511" r="1.2" fill="white" opacity=".6"/>
+      <circle  cx="85"  cy="509" r="1.2" fill="white" opacity=".6"/>
+      <circle  cx="95"  cy="511" r="1.2" fill="white" opacity=".6"/>
+
+      <!-- ══ ARRIVÉE decor (bottom-right, around x=285 y=600) ══ -->
+      <!-- little spa bowl / candles -->
+      <ellipse cx="290" cy="608" rx="28" ry="10" fill="#d4c8a8" opacity=".75"/>
+      <ellipse cx="290" cy="604" rx="22" ry="8"  fill="#e8dfc0" opacity=".8"/>
+      <!-- candles -->
+      <rect x="275" y="588" width="6" height="16" rx="2" fill="#f5f0e0" opacity=".9"/>
+      <ellipse cx="278" cy="587" rx="2.5" ry="4" fill="#ffd020" opacity=".8"/>
+      <rect x="289" y="584" width="7" height="20" rx="2" fill="#f5f0e0" opacity=".9"/>
+      <ellipse cx="292" cy="583" rx="2.5" ry="4" fill="#ffd020" opacity=".85"/>
+      <rect x="304" y="590" width="5" height="14" rx="2" fill="#f5f0e0" opacity=".9"/>
+      <ellipse cx="306" cy="589" rx="2" ry="3.5"  fill="#ffd020" opacity=".8"/>
+      <!-- flower petals around -->
+      <circle cx="262" cy="600" r="4" fill="#ff9ad4" opacity=".7"/>
+      <circle cx="262" cy="600" r="1.5" fill="#ffe066" opacity=".9"/>
+      <circle cx="318" cy="598" r="3.5" fill="#c8a0f0" opacity=".7"/>
+      <circle cx="318" cy="598" r="1.2" fill="white" opacity=".9"/>
+
+      <!-- ══ DOTTED PATH — simple zigzag top→bottom, NO crossings ══
+           DÉPART  (195, 48)
+           → FORÊT  (305,155)  : curve right-down
+           → PRÉ    (85, 278)  : curve left-down
+           → FONTAINE(305,395) : curve right-down
+           → NID    (85, 510)  : curve left-down
+           → ARRIVÉE(285,600)  : curve right-down
+      -->
+
+      <!-- seg 0 : DÉPART → FORÊT -->
+      <path d="M195,70 C215,100 270,120 305,140"
+        stroke="rgba(255,255,255,.7)" stroke-width="4.5" fill="none"
+        stroke-dasharray="9,11" stroke-linecap="round"/>
+
+      <!-- seg 1 : FORÊT → PRÉ FLEURI -->
+      <path d="M305,172 C290,210 150,230 85,258"
+        stroke="rgba(255,255,255,.7)" stroke-width="4.5" fill="none"
+        stroke-dasharray="9,11" stroke-linecap="round"/>
+
+      <!-- seg 2 : PRÉ FLEURI → FONTAINE -->
+      <path d="M85,298 C100,330 255,358 305,375"
+        stroke="rgba(255,255,255,.7)" stroke-width="4.5" fill="none"
+        stroke-dasharray="9,11" stroke-linecap="round"/>
+
+      <!-- seg 3 : FONTAINE → NID SECRET -->
+      <path d="M305,415 C285,450 140,472 85,490"
+        stroke="rgba(255,255,255,.7)" stroke-width="4.5" fill="none"
+        stroke-dasharray="9,11" stroke-linecap="round"/>
+
+      <!-- seg 4 : NID SECRET → ARRIVÉE -->
+      <path d="M85,530 C130,565 220,580 270,592"
+        stroke="rgba(255,255,255,.7)" stroke-width="4.5" fill="none"
+        stroke-dasharray="9,11" stroke-linecap="round"/>
+
+      <!-- direction arrows (small triangles along path midpoints) -->
+      <!-- arrow 0 mid ~(255,112) pointing right-down -->
+      <polygon points="252,107 262,112 252,117" fill="rgba(255,255,255,.55)"/>
+      <!-- arrow 1 mid ~(192,245) pointing left-down -->
+      <polygon points="197,240 187,245 197,250" fill="rgba(255,255,255,.55)"/>
+      <!-- arrow 2 mid ~(192,357) pointing right-down -->
+      <polygon points="188,352 198,357 188,362" fill="rgba(255,255,255,.55)"/>
+      <!-- arrow 3 mid ~(192,460) pointing left-down -->
+      <polygon points="197,455 187,460 197,465" fill="rgba(255,255,255,.55)"/>
+      <!-- arrow 4 mid ~(178,563) pointing right-down -->
+      <polygon points="174,558 184,563 174,568" fill="rgba(255,255,255,.55)"/>
+
+      <!-- scattered ground flowers -->
+      <circle cx="170" cy="175" r="4.5" fill="#ffd06e" opacity=".55"/><circle cx="170" cy="175" r="1.5" fill="#e84a7a" opacity=".8"/>
+      <circle cx="220" cy="325" r="4"   fill="#a0d8ff" opacity=".55"/><circle cx="220" cy="325" r="1.3" fill="white" opacity=".8"/>
+      <circle cx="165" cy="450" r="4"   fill="#ff9ad4" opacity=".55"/><circle cx="165" cy="450" r="1.5" fill="#ffe066" opacity=".8"/>
+      <circle cx="250" cy="490" r="3.5" fill="#c8f0a0" opacity=".55"/><circle cx="250" cy="490" r="1.2" fill="#5a9e5a" opacity=".8"/>
+    </svg>
+
+    <!-- ══ STOP NODES ══
+         Positions in % = svgX/390 × 100,  svgY/640 × 100
+         DÉPART   195/390=50%,  48/640= 7.5%
+         FORÊT    305/390=78%,  155/640=24.2%
+         PRÉ      85/390=21.8%, 278/640=43.4%
+         FONTAINE 305/390=78%,  395/640=61.7%
+         NID      85/390=21.8%, 510/640=79.7%
+         ARRIVÉE  285/390=73.1%,600/640=93.8%
+    -->
+
+    <!-- DÉPART (top center) -->
+    <div class="stop start-stop" id="stop-start" style="left:50%;top:7.5%">
+      <div class="stop-bubble">🏁</div>
+      <div class="stop-label">Départ</div>
+    </div>
+
+    <!-- Stop 0 : Forêt -->
+    <div class="stop locked" id="stop-0" style="left:78%;top:24.2%">
+      <div class="stop-bubble" id="sb-0">🥚</div>
+      <div class="stop-label">La Forêt</div>
+    </div>
+
+    <!-- Stop 1 : Pré fleuri -->
+    <div class="stop locked" id="stop-1" style="left:21.8%;top:43.4%">
+      <div class="stop-bubble" id="sb-1">🥚</div>
+      <div class="stop-label">Le Pré fleuri</div>
+    </div>
+
+    <!-- Stop 2 : Fontaine -->
+    <div class="stop locked" id="stop-2" style="left:78%;top:61.7%">
+      <div class="stop-bubble" id="sb-2">🥚</div>
+      <div class="stop-label">La Fontaine</div>
+    </div>
+
+    <!-- Stop 3 : Nid secret -->
+    <div class="stop locked" id="stop-3" style="left:21.8%;top:79.7%">
+      <div class="stop-bubble" id="sb-3">🥚</div>
+      <div class="stop-label">Le Nid secret</div>
+    </div>
+
+    <!-- Stop 4 : Arrivée au salon -->
+    <div class="stop locked" id="stop-4" style="left:73.1%;top:93.8%">
+      <div class="stop-bubble" id="sb-4">🌿</div>
+      <div class="stop-label">Zen Attitude 59</div>
+    </div>
+
+    <!-- BUNNY starts at top -->
+    <div class="map-bunny" id="map-bunny" style="left:50%;top:7.5%">🐰</div>
+
+  </div><!-- /map-scene -->
+
+  <div class="prog-wrap">
+    <div class="prog-track">
+      <div class="prog-fill" id="prog-fill" style="width:0%"></div>
+    </div>
+    <div class="prog-label" id="prog-label">0 / 5 étapes complétées</div>
+  </div>
+
+</div>
+
+<!-- ══ QUESTION ══ -->
+<div id="screen-question" class="screen">
+  <div class="brand" style="margin-bottom:1.2rem">Zen Attitude 59</div>
+  <div class="q-card">
+    <div class="q-progress" id="q-progress">Question 1 / 5</div>
+    <span class="q-egg" id="q-egg">🥚</span>
+    <div style="text-align:center;margin-bottom:.6rem">
+      <span class="q-zone-banner" id="q-zone-banner"></span>
+    </div>
+    <div class="q-text" id="q-text"></div>
+    <div class="q-opts" id="q-opts"></div>
+    <div class="q-fb" id="q-fb"></div>
+  </div>
+</div>
+
+<!-- ══ FINAL ══ -->
+<div id="screen-final" class="screen">
+  <span class="confetti">🎉</span>
+  <div class="brand" style="color:rgba(255,255,255,.6);margin-bottom:.2rem">Zen Attitude 59</div>
+  <h2 class="final-title">Tu as trouvé<br>tous les œufs !</h2>
+  <p class="final-sub">Félicitations 🐰✨ Voici ta récompense :</p>
+  <div class="promo-reveal">
+    <div class="promo-label">Ton code de réduction</div>
+    <div class="promo-code">PÂQUES10</div>
+    <div class="promo-desc">−10% sur ton prochain massage</div>
+    <div class="promo-valid">Valable jusqu'au 30 avril · Non cumulable</div>
+    <button class="copy-btn" onclick="copyCode(this)">📋 Copier le code</button>
+  </div>
+  <div class="eggs-row" id="final-eggs"></div>
+  <p style="text-align:center;font-size:.8rem;opacity:.55;max-width:290px;margin-bottom:1.2rem">Présente ce code lors de ta réservation ou au salon. À très vite 🌿</p>
+  <button class="btn-white" onclick="alert('Lien vers ton système de réservation 📅')">📞 Réserver maintenant</button>
+</div>
+
+<script>
+const questions = [
+  {
+    egg:"🌲", zone:"La Forêt enchantée", zoneBg:"#4a8f52",
+    text:"Ton niveau de stress en ce moment, c'est plutôt… ?",
+    opts:[{e:"😌",l:"Zen comme un lundi matin de Pâques"},{e:"😤",l:"Légèrement tendu·e… j'en ai besoin"},{e:"🤯",l:"SOS ! Je suis une boule de nerfs"},{e:"💤",l:"Trop fatigué·e pour même répondre"}],
+    fb:["Ah, un esprit zen ! On va maintenir ça 🌿","Un bon massage et tu seras au top ! 💆","On t'attend les bras ouverts, huiles chaudes 🕯️","Le soin détente est fait pour toi ! 😴"],
+    fbt:["good","fun","fun","fun"]
+  },
+  {
+    egg:"🌸", zone:"Le Pré fleuri", zoneBg:"#c05080",
+    text:"Si tu pouvais n'entendre qu'un seul son pendant ton massage ?",
+    opts:[{e:"🌊",l:"Les vagues de l'océan"},{e:"🎶",l:"Une musique douce & relaxante"},{e:"🌧️",l:"La pluie légère sur les feuilles"},{e:"🔇",l:"Le silence total, s'il vous plaît !"}],
+    fb:["L'appel de la mer… notre soin te transportera 🌊","On règle l'ambiance musicale pour toi 🎵","Nature & plénitude, on adore ! 🍃","Le silence est d'or, surtout ici 🤫"],
+    fbt:["good","fun","fun","fun"]
+  },
+  {
+    egg:"💧", zone:"La Fontaine zen", zoneBg:"#3a8aab",
+    text:"Après ton massage idéal, tu ressembles à…",
+    opts:[{e:"😍",l:"Une fleur qui s'épanouit au printemps"},{e:"🍜",l:"Une nouille bien cuite (tout détendu·e !)"},{e:"☁️",l:"Un nuage flottant dans le ciel bleu"},{e:"🐱",l:"Un chat qui ronronne sur un canapé chaud"}],
+    fb:["Belle métaphore printanière ! 🌷","C'est le but : la nouille parfaite 🍜😂","La légèreté absolue, c'est notre promesse ☁️","Ronron et détente garantis 🐱💆"],
+    fbt:["good","fun","fun","fun"]
+  },
+  {
+    egg:"🪹", zone:"Le Nid secret", zoneBg:"#8b6030",
+    text:"Quelle zone a le plus besoin d'attention lors de ton prochain soin ?",
+    opts:[{e:"🦴",l:"Le dos & les épaules"},{e:"🦶",l:"Les pieds & les jambes"},{e:"😮‍💨",l:"La tête & le cuir chevelu"},{e:"🫀",l:"Tout le corps, je me laisse guider"}],
+    fb:["Le duo dos-épaules, notre spécialité ! 💪","Un soin jambes-pieds pour repartir d'aplomb 🦶","Le massage crânien : lâcher-prise total 🧠","On s'occupe de tout de la tête aux pieds 🌟"],
+    fbt:["good","fun","fun","fun"]
+  },
+  {
+    egg:"🌿", zone:"Zen Attitude 59", zoneBg:"#4a6b4e",
+    text:"Si Zen Attitude 59 était un arôme, ce serait…",
+    opts:[{e:"🌹",l:"Rose & santal — doux et enveloppant"},{e:"🌿",l:"Eucalyptus & menthe — frais et vivifiant"},{e:"🍊",l:"Orange & cannelle — chaleureux et pétillant"},{e:"🌙",l:"Lavande & vanille — apaisant et cocooning"}],
+    fb:["Sensoriel et raffiné, pour un moment de luxe 🌹","L'énergie du renouveau printanier ! 🌿","Pétillant et réconfortant, comme notre équipe 🍊","La douceur absolue, un vrai cocon 🌙"],
+    fbt:["good","fun","fun","fun"]
+  }
+];
+
+// positions matching HTML stop % values
+const stopPos = [
+  {l:"50%",    t:"7.5%"},   // 0 = start
+  {l:"78%",    t:"24.2%"},  // 1 = forêt
+  {l:"21.8%",  t:"43.4%"},  // 2 = pré
+  {l:"78%",    t:"61.7%"},  // 3 = fontaine
+  {l:"21.8%",  t:"79.7%"},  // 4 = nid
+  {l:"73.1%",  t:"93.8%"},  // 5 = arrivée
+];
+
+let currentQ = 0;
+let answering = false;
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function startGame() {
+  showScreen('screen-map');
+  updateMap();
+  moveBunny(1);
+}
+
+function updateMap() {
+  for (let i=0;i<5;i++) {
+    const stop = document.getElementById(`stop-${i}`);
+    const sb   = document.getElementById(`sb-${i}`);
+    if (!stop) continue;
+    if (i < currentQ) {
+      stop.className = 'stop done';
+      sb.textContent = '✅';
+      stop.querySelector('.stop-bubble').onclick = null;
+    } else if (i === currentQ) {
+      stop.className = 'stop active';
+      sb.textContent = questions[i].egg;
+      stop.querySelector('.stop-bubble').onclick = () => openQuestion(i);
+    } else {
+      stop.className = 'stop locked';
+      sb.textContent = '🥚';
+      stop.querySelector('.stop-bubble').onclick = null;
+    }
+  }
+  const pct = (currentQ/5)*100;
+  document.getElementById('prog-fill').style.width = pct+'%';
+  document.getElementById('prog-label').textContent = `${currentQ} / 5 étapes complétées`;
+}
+
+function moveBunny(idx) {
+  const b = document.getElementById('map-bunny');
+  const p = stopPos[idx];
+  if (!b||!p) return;
+  b.style.left = p.l;
+  b.style.top  = p.t;
+}
+
+function openQuestion(idx) {
+  const q = questions[idx];
+  answering = false;
+  document.getElementById('q-progress').textContent = `Question ${idx+1} / 5`;
+  document.getElementById('q-egg').textContent = q.egg;
+  const banner = document.getElementById('q-zone-banner');
+  banner.textContent = q.zone;
+  banner.style.background = q.zoneBg;
+  document.getElementById('q-text').textContent = q.text;
+  const fb = document.getElementById('q-fb');
+  fb.className='q-fb'; fb.textContent='';
+  const opts = document.getElementById('q-opts');
+  opts.innerHTML='';
+  q.opts.forEach((opt,i)=>{
+    const btn=document.createElement('button');
+    btn.className='q-opt';
+    btn.innerHTML=`<span class="opt-e">${opt.e}</span>${opt.l}`;
+    btn.onclick=()=>selectAnswer(idx,i,btn);
+    opts.appendChild(btn);
+  });
+  showScreen('screen-question');
+}
+
+function selectAnswer(qIdx,optIdx,btn) {
+  if (answering) return;
+  answering=true;
+  document.querySelectorAll('.q-opt').forEach(b=>b.style.pointerEvents='none');
+  btn.classList.add('selected');
+  const q=questions[qIdx];
+  const fb=document.getElementById('q-fb');
+  fb.textContent=q.fb[optIdx];
+  fb.className='q-fb '+(q.fbt[optIdx]||'fun');
+  setTimeout(()=>{
+    answering=false;
+    currentQ++;
+    if (currentQ>=5) {
+      showScreen('screen-map');
+      updateMap();
+      moveBunny(5);
+      setTimeout(showFinal,1100);
+    } else {
+      showScreen('screen-map');
+      updateMap();
+      moveBunny(currentQ+1);
+    }
+  },1900);
+}
+
+function showFinal() {
+  const el=document.getElementById('final-eggs');
+  el.innerHTML='';
+  ['🌲','🌸','💧','🪹','🌿'].forEach((e,i)=>{
+    const s=document.createElement('span');
+    s.textContent=e;
+    el.appendChild(s);
+    setTimeout(()=>s.classList.add('lit'),300+i*180);
+  });
+  showScreen('screen-final');
+}
+
+function copyCode(btn) {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText('PÂQUES10').then(()=>{
+      btn.textContent='✅ Copié !';
+      setTimeout(()=>{btn.textContent='📋 Copier le code';},2500);
+    });
+  } else { alert('Ton code : PÂQUES10'); }
+}
+</script>
+</body>
+</html>
