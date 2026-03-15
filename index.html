@@ -131,7 +131,31 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;ov
   <div class="big-bunny">🐰</div>
   <h1 class="intro-title">La Chasse aux<br><em>Œufs Zen</em></h1>
   <p class="intro-sub">Notre petit lapin part en grande balade printanière ! 12 étapes, 12 questions… et une belle récompense à la clé 🌸</p>
-  <div class="reward-badge">🎁 Jusqu'à 10% de réduction sur ton prochain soin</div>
+
+  <!-- RÈGLES DU JEU -->
+  <div style="background:rgba(255,255,255,.75);border-radius:16px;padding:1rem 1.3rem;max-width:320px;width:100%;margin-bottom:1.2rem;box-shadow:0 4px 16px rgba(0,0,0,.06);">
+    <p style="font-size:.72rem;font-weight:800;color:var(--sage-dark);text-align:center;margin-bottom:.6rem;letter-spacing:.06em;text-transform:uppercase">🎯 Les paliers à atteindre</p>
+    <div style="display:flex;flex-direction:column;gap:.35rem;">
+      <div style="display:flex;align-items:center;justify-content:space-between;font-size:.82rem;">
+        <span style="color:var(--deep);font-weight:700">🥚 3 bonnes réponses de suite</span>
+        <span style="font-weight:800;color:var(--gold);background:#fff8ee;padding:2px 8px;border-radius:8px;">−10%</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;font-size:.82rem;">
+        <span style="color:var(--deep);font-weight:700">🥚🥚 6 bonnes réponses de suite</span>
+        <span style="font-weight:800;color:var(--gold);background:#fff8ee;padding:2px 8px;border-radius:8px;">−20%</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;font-size:.82rem;">
+        <span style="color:var(--deep);font-weight:700">🥚🥚🥚 9 bonnes réponses de suite</span>
+        <span style="font-weight:800;color:var(--gold);background:#fff8ee;padding:2px 8px;border-radius:8px;">−30%</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;font-size:.82rem;border-top:1px solid var(--sage-light);padding-top:.35rem;margin-top:.1rem;">
+        <span style="color:var(--sage-dark);font-weight:800">🏆 12 bonnes réponses de suite</span>
+        <span style="font-weight:800;color:white;background:linear-gradient(135deg,var(--gold),#e0be70);padding:2px 8px;border-radius:8px;box-shadow:0 2px 6px rgba(201,169,110,.4);">−50%</span>
+      </div>
+    </div>
+    <p style="font-size:.68rem;color:#999;text-align:center;margin-top:.6rem;">⚠️ Une mauvaise réponse arrête le jeu</p>
+  </div>
+
   <button class="btn-primary" onclick="startGame()">🐣 Suivre le lapin !</button>
 </div>
 
@@ -371,17 +395,20 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;ov
     <div class="stop locked" id="stop-10" style="left:80.3%;top:88.3%"><div class="stop-bubble" id="sb-10">🥚</div><div class="stop-label" id="sl-10">11. Le Jardin zen</div></div>
     <div class="stop locked" id="stop-11" style="left:19.7%;top:93.6%"><div class="stop-bubble" id="sb-11">🥚</div><div class="stop-label" id="sl-11">12. Le Sentier</div></div>
 
-    <div class="stop finish-stop" id="stop-finish" style="left:50%;top:97.9%">
-      <div class="stop-bubble">🌿</div>
-      <div class="stop-label">Zen Attitude 59</div>
-    </div>
-
     <div class="map-bunny" id="map-bunny" style="left:50%;top:5.4%">🐰</div>
   </div>
 
   <div class="prog-wrap">
     <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
     <div class="prog-label" id="prog-label">0 / 12 étapes complétées</div>
+  </div>
+
+  <!-- rappel paliers compact -->
+  <div style="display:flex;gap:.4rem;justify-content:center;flex-wrap:wrap;margin-top:.4rem;max-width:370px;width:100%;">
+    <span id="tier-badge-0" style="font-size:.65rem;font-weight:800;padding:2px 8px;border-radius:10px;background:rgba(255,255,255,.35);color:var(--deep);">3✓ → −10%</span>
+    <span id="tier-badge-1" style="font-size:.65rem;font-weight:800;padding:2px 8px;border-radius:10px;background:rgba(255,255,255,.35);color:var(--deep);">6✓ → −20%</span>
+    <span id="tier-badge-2" style="font-size:.65rem;font-weight:800;padding:2px 8px;border-radius:10px;background:rgba(255,255,255,.35);color:var(--deep);">9✓ → −30%</span>
+    <span id="tier-badge-3" style="font-size:.65rem;font-weight:800;padding:2px 8px;border-radius:10px;background:rgba(255,255,255,.35);color:var(--deep);">12✓ → −50%</span>
   </div>
 </div>
 
@@ -402,20 +429,55 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;ov
 
 <!-- ══ FINAL ══ -->
 <div id="screen-final" class="screen">
-  <span class="confetti">🎉</span>
+  <span class="confetti" id="final-confetti">🎉</span>
   <div class="brand" style="color:rgba(255,255,255,.6);margin-bottom:.2rem">Zen Attitude 59</div>
-  <h2 class="final-title">Tu as trouvé<br>tous les œufs !</h2>
-  <p class="final-sub">Félicitations 🐰✨ Voici ta récompense :</p>
+  <h2 class="final-title" id="final-title">Tu as trouvé<br>tous les œufs !</h2>
+  <p class="final-sub" id="final-sub">Félicitations 🐰✨ Voici ta récompense :</p>
   <div class="promo-reveal">
     <div class="promo-label">Ton code de réduction</div>
-    <div class="promo-code">PÂQUES10</div>
-    <div class="promo-desc">−10% sur ton prochain massage</div>
+    <div class="promo-code" id="final-code">—</div>
+    <div class="promo-desc" id="final-desc"></div>
     <div class="promo-valid">Valable jusqu'au 30 avril · Non cumulable</div>
-    <button class="copy-btn" onclick="copyCode(this)">📋 Copier le code</button>
+    <button class="copy-btn" id="copy-btn" onclick="copyCode(this)">📋 Copier le code</button>
   </div>
   <div class="eggs-row" id="final-eggs"></div>
   <p style="text-align:center;font-size:.78rem;opacity:.55;max-width:280px;margin-bottom:1.1rem">Présente ce code lors de ta réservation ou au salon. À très vite 🌿</p>
   <button class="btn-white" onclick="window.open('https://www.zenattitude59.com/','_blank')">📞 Réserver maintenant</button>
+</div>
+
+<!-- ══ GAME OVER ══ -->
+<div id="screen-gameover" class="screen">
+  <span style="font-size:3rem;display:block;text-align:center;margin-bottom:.6rem">😢</span>
+  <div class="brand" style="color:var(--sage-dark);margin-bottom:.3rem">Zen Attitude 59</div>
+  <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.6rem,5vw,2.2rem);color:var(--deep);text-align:center;line-height:1.2;margin-bottom:.5rem">Oups… mauvaise réponse !</h2>
+  <p style="text-align:center;font-size:.9rem;color:#666;max-width:320px;line-height:1.6;margin-bottom:1.4rem" id="gameover-sub">Ne t'inquiète pas, voici quand même ta récompense pour avoir joué !</p>
+
+  <!-- palier atteint -->
+  <div id="gameover-promo" style="display:none">
+    <div class="promo-reveal" style="background:rgba(122,158,126,.12);border-color:var(--sage-light);">
+      <div class="promo-label" style="color:var(--sage-dark)">Ton code gagné</div>
+      <div class="promo-code" id="gameover-code" style="color:var(--gold)">—</div>
+      <div class="promo-desc" id="gameover-desc" style="color:var(--deep)"></div>
+      <div class="promo-valid" style="color:#888">Valable jusqu'au 30 avril · Non cumulable</div>
+      <button class="copy-btn" style="background:var(--sage);border-color:var(--sage-dark)" id="gameover-copy" onclick="copyCodeById('gameover-code',this)">📋 Copier le code</button>
+    </div>
+  </div>
+
+  <!-- aucun palier -->
+  <div id="gameover-nopromo" style="display:none;text-align:center;background:rgba(255,255,255,.7);border-radius:16px;padding:1.2rem 1.5rem;max-width:300px;width:100%;margin-bottom:1rem">
+    <p style="font-size:.9rem;color:var(--deep);font-weight:700">Tu n'as pas encore atteint de palier 😊</p>
+    <p style="font-size:.82rem;color:#777;margin-top:.4rem">Reviens vite pour tenter ta chance et décrocher au moins <strong>−10%</strong> en répondant aux 3 premières questions !</p>
+  </div>
+
+  <div class="eggs-row" id="gameover-eggs" style="margin:.5rem 0"></div>
+
+  <!-- rappel des paliers -->
+  <div style="background:rgba(255,255,255,.65);border-radius:14px;padding:.9rem 1.2rem;max-width:300px;width:100%;margin-bottom:1.2rem">
+    <p style="font-size:.72rem;font-weight:800;color:var(--sage-dark);text-align:center;margin-bottom:.5rem;letter-spacing:.05em;text-transform:uppercase">Les paliers à atteindre</p>
+    <div id="tiers-recap" style="display:flex;flex-direction:column;gap:.3rem"></div>
+  </div>
+
+  <button class="btn-primary" onclick="window.open('https://www.zenattitude59.com/','_blank')">📞 Réserver maintenant</button>
 </div>
 
 <script>
@@ -500,7 +562,16 @@ const stopPos = [
   {l:"50%",    t:"97.9%"},  // finish
 ];
 
-let currentQ = 0, answering = false;
+const TIERS = [
+  { at:3,  code:'ZEN10',  pct:'-10%', label:'3 bonnes réponses' },
+  { at:6,  code:'ZEN20',  pct:'-20%', label:'6 bonnes réponses' },
+  { at:9,  code:'ZEN30',  pct:'-30%', label:'9 bonnes réponses' },
+  { at:12, code:'ZEN50',  pct:'-50%', label:'12 bonnes réponses' },
+];
+
+let currentQ = 0, answering = false, currentTier = -1;
+
+function getTier(q){ return TIERS.findLastIndex(t => q >= t.at); }
 
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
 
@@ -524,7 +595,23 @@ function updateMap(){
   }
   const pct=(currentQ/12)*100;
   document.getElementById('prog-fill').style.width=pct+'%';
-  document.getElementById('prog-label').textContent=`${currentQ} / 12 étapes complétées`;
+  const tier = getTier(currentQ);
+  const tierLabel = tier >= 0 ? ` · ${TIERS[tier].pct} gagné 🎁` : '';
+  document.getElementById('prog-label').textContent=`${currentQ} / 12 étapes complétées${tierLabel}`;
+  // update tier badges
+  TIERS.forEach((t,i)=>{
+    const badge = document.getElementById(`tier-badge-${i}`);
+    if(!badge) return;
+    if(currentQ >= t.at){
+      badge.style.background='linear-gradient(135deg,var(--gold),#e0be70)';
+      badge.style.color='white';
+      badge.style.boxShadow='0 2px 8px rgba(201,169,110,.4)';
+    } else {
+      badge.style.background='rgba(255,255,255,.35)';
+      badge.style.color='var(--deep)';
+      badge.style.boxShadow='none';
+    }
+  });
 }
 
 function moveBunny(idx){
@@ -563,37 +650,153 @@ function selectAnswer(qIdx,optIdx,btn){
   btn.classList.add('selected');
   const q=questions[qIdx];
   const fb=document.getElementById('q-fb');
+  const isCorrect = q.fbt[optIdx] === 'good';
+
   fb.textContent=q.fb[optIdx];
   fb.className='q-fb '+(q.fbt[optIdx]||'fun');
+
   setTimeout(()=>{
     answering=false;
+
+    if(!isCorrect){
+      // mauvaise réponse → game over
+      showGameOver(currentQ);
+      return;
+    }
+
     currentQ++;
-    if(currentQ>=12){
-      showScreen('screen-map');updateMap();moveBunny(13);
-      setTimeout(showFinal,1100);
-    }else{
-      showScreen('screen-map');updateMap();moveBunny(currentQ+1);
+    const newTier = getTier(currentQ);
+
+    if(currentQ >= 12){
+      // parcours complet !
+      showScreen('screen-map'); updateMap(); moveBunny(13);
+      setTimeout(()=>showFinal(12), 1100);
+    } else if(newTier > currentTier){
+      // palier atteint → show map avec notification puis continuer
+      currentTier = newTier;
+      showScreen('screen-map'); updateMap(); moveBunny(currentQ+1);
+      showTierNotif(TIERS[newTier]);
+    } else {
+      showScreen('screen-map'); updateMap(); moveBunny(currentQ+1);
     }
   },1900);
 }
 
-function showFinal(){
-  const el=document.getElementById('final-eggs');
-  el.innerHTML='';
-  ['🌲','🌸','💧','🪹','💎','🎁','🌿','🕯️','🤲','🌙','💆','🐰'].forEach((e,i)=>{
-    const s=document.createElement('span');s.textContent=e;el.appendChild(s);
+// notification palier atteint (toast)
+function showTierNotif(tier){
+  const existing = document.getElementById('tier-notif');
+  if(existing) existing.remove();
+  const notif = document.createElement('div');
+  notif.id = 'tier-notif';
+  notif.style.cssText = `
+    position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.8);
+    background:linear-gradient(135deg,var(--sage-dark),var(--deep));
+    color:white;border-radius:20px;padding:1.4rem 2rem;text-align:center;
+    z-index:100;box-shadow:0 12px 40px rgba(0,0,0,.3);
+    animation:tierPop .4s cubic-bezier(.34,1.56,.64,1) forwards;
+    max-width:280px;width:90%;
+  `;
+  notif.innerHTML = `
+    <div style="font-size:2.5rem;margin-bottom:.4rem">🎁</div>
+    <div style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--gold-light)">${tier.pct}</div>
+    <div style="font-size:.9rem;font-weight:700;margin:.3rem 0">Palier atteint !</div>
+    <div style="font-size:.78rem;opacity:.8;margin-bottom:.6rem">Code : <strong>${tier.code}</strong></div>
+    <div style="font-size:.72rem;opacity:.65">Continue pour gagner encore plus ! 🚀</div>
+  `;
+  const style = document.createElement('style');
+  style.textContent = `@keyframes tierPop{from{opacity:0;transform:translate(-50%,-50%) scale(.7)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}`;
+  document.head.appendChild(style);
+  document.body.appendChild(notif);
+  setTimeout(()=>{
+    notif.style.animation='none';
+    notif.style.opacity='0';
+    notif.style.transition='opacity .4s';
+    setTimeout(()=>notif.remove(), 400);
+  }, 2800);
+}
+
+function showFinal(qCount){
+  const tier = getTier(qCount);
+  const t = TIERS[tier];
+  document.getElementById('final-code').textContent = t.code;
+  document.getElementById('final-desc').textContent = `${t.pct} sur ton prochain massage 🎉`;
+  document.getElementById('copy-btn').setAttribute('data-code', t.code);
+
+  // message selon palier
+  if(tier === 3){
+    document.getElementById('final-title').innerHTML = 'Parfait ! 12/12<br>Tu es un·e expert·e !';
+    document.getElementById('final-sub').textContent = '🏆 Le grand chelem ! Voici ta récompense maximale :';
+    document.getElementById('final-confetti').textContent = '🏆';
+  }
+
+  const eggsEl=document.getElementById('final-eggs');
+  eggsEl.innerHTML='';
+  ['🌲','🌸','💧','🪹','💎','🎁','🌿','🗣️','💫','📖','⛪','🧙'].forEach((e,i)=>{
+    const s=document.createElement('span');s.textContent=e;eggsEl.appendChild(s);
     setTimeout(()=>s.classList.add('lit'),200+i*120);
   });
   showScreen('screen-final');
 }
 
+function showGameOver(qCount){
+  const tier = getTier(qCount);
+
+  // eggs déjà collectés
+  const eggsEl = document.getElementById('gameover-eggs');
+  eggsEl.innerHTML='';
+  const allEggs = ['🌲','🌸','💧','🪹','💎','🎁','🌿','🗣️','💫','📖','⛪','🧙'];
+  for(let i=0;i<qCount;i++){
+    const s=document.createElement('span');s.textContent=allEggs[i];eggsEl.appendChild(s);
+    setTimeout(()=>s.classList.add('lit'),100+i*100);
+  }
+
+  // tiers recap
+  const recap = document.getElementById('tiers-recap');
+  recap.innerHTML='';
+  TIERS.forEach(t=>{
+    const reached = qCount >= t.at;
+    const div = document.createElement('div');
+    div.style.cssText='display:flex;align-items:center;justify-content:space-between;font-size:.75rem;padding:.2rem 0;';
+    div.innerHTML=`
+      <span style="color:${reached?'var(--sage-dark)':'#aaa'};font-weight:700">${reached?'✅':'🔒'} ${t.label}</span>
+      <span style="font-weight:800;color:${reached?'var(--gold)':'#ccc'}">${t.pct}</span>
+    `;
+    recap.appendChild(div);
+  });
+
+  if(tier >= 0){
+    const t = TIERS[tier];
+    document.getElementById('gameover-promo').style.display='block';
+    document.getElementById('gameover-nopromo').style.display='none';
+    document.getElementById('gameover-code').textContent = t.code;
+    document.getElementById('gameover-desc').textContent = `${t.pct} sur ton prochain massage`;
+    document.getElementById('gameover-sub').textContent = `Tu avais atteint le palier ${t.pct} — voici ton code ! 🎁`;
+  } else {
+    document.getElementById('gameover-promo').style.display='none';
+    document.getElementById('gameover-nopromo').style.display='block';
+    document.getElementById('gameover-sub').textContent = `Dommage ! Retente ta chance pour décrocher une réduction 💪`;
+  }
+  showScreen('screen-gameover');
+}
+
 function copyCode(btn){
+  const code = btn.getAttribute('data-code') || document.getElementById('final-code').textContent;
   if(navigator.clipboard){
-    navigator.clipboard.writeText('PÂQUES10').then(()=>{
+    navigator.clipboard.writeText(code).then(()=>{
       btn.textContent='✅ Copié !';
       setTimeout(()=>{btn.textContent='📋 Copier le code';},2500);
     });
-  }else{alert('Ton code : PÂQUES10');}
+  }else{alert('Ton code : '+code);}
+}
+
+function copyCodeById(id, btn){
+  const code = document.getElementById(id).textContent;
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(code).then(()=>{
+      btn.textContent='✅ Copié !';
+      setTimeout(()=>{btn.textContent='📋 Copier le code';},2500);
+    });
+  }else{alert('Ton code : '+code);}
 }
 </script>
 </body>
