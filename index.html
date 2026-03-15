@@ -309,54 +309,36 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;ov
       <circle  cx="85"  cy="533" r="1.1" fill="white" opacity=".6"/>
 
       <!-- scattered little flowers -->
-           Each segment is a gentle S-curve between adjacent stops.
-           All going TOP → BOTTOM, alternating R and L.
-      -->
-      <!-- START(190,38) → S0(305,94) -->
-      <path d="M190,52 C220,62 280,78 305,80" stroke="rgba(255,255,255,.72)" stroke-width="4" fill="none" stroke-dasharray="8,10" stroke-linecap="round"/>
-      <!-- S0(305,94) → S1(75,150) -->
-      <path d="M305,108 C280,122 140,132 75,138" stroke="rgba(255,255,255,.72)" stroke-width="4" fill="none" stroke-dasharray="8,10" stroke-linecap="round"/>
-      <!-- S1(75,150) → S2(305,206) -->
-      <path d="M75,164 C100,178 255,190 305,194" stroke="rgba(255,255,255,.72)" stroke-width="4" fill="none" stroke-dasharray="8,10" stroke-linecap="round"/>
-      <!-- S2(305,206) → S3(75,262) FORÊT -->
-      <path d="M305,220 C280,234 140,244 75,250" stroke="rgba(255,255,255,.72)" stroke-width="4" fill="none" stroke-dasharray="8,10" stroke-linecap="round"/>
-      <!-- S3(75,262) → S4(305,318) PRÉ -->
-      <path d="M75,276 C100,290 255,302 305,306" stroke="rgba(255,255,255,.72)" stroke-width="4" fill="none" stroke-dasharray="8,10" stroke-linecap="round"/>
-      <!-- S4(305,318) → S5(75,374) -->
-      <path d="M305,332 C280,346 140,356 75,362" stroke="rgba(255,255,255,.72)" stroke-width="4" fill="none" stroke-dasharray="8,10" stroke-linecap="round"/>
-      <!-- S5(75,374) → S6(305,430) FONTAINE -->
-      <path d="M75,388 C100,402 255,414 305,418" stroke="rgba(255,255,255,.72)" stroke-width="4" fill="none" stroke-dasharray="8,10" stroke-linecap="round"/>
-      <!-- S6(305,430) → S7(75,486) -->
-      <path d="M305,444 C280,458 140,468 75,474" stroke="rgba(255,255,255,.72)" stroke-width="4" fill="none" stroke-dasharray="8,10" stroke-linecap="round"/>
-      <!-- S7(75,486) → S8(305,530) NID -->
-      <path d="M75,500 C100,512 255,520 305,518" stroke="rgba(255,255,255,.72)" stroke-width="4" fill="none" stroke-dasharray="8,10" stroke-linecap="round"/>
-      <!-- S8(305,530) → S9(75,574) -->
-      <path d="M305,544 C280,556 140,562 75,562" stroke="rgba(255,255,255,.72)" stroke-width="4" fill="none" stroke-dasharray="8,10" stroke-linecap="round"/>
-      <!-- S9(75,574) → S10(305,618) -->
-      <path d="M75,588 C100,600 255,608 305,606" stroke="rgba(255,255,255,.72)" stroke-width="4" fill="none" stroke-dasharray="8,10" stroke-linecap="round"/>
-      <!-- S10(305,618) → S11(75,655) -->
-      <path d="M305,632 C280,642 140,648 75,644" stroke="rgba(255,255,255,.72)" stroke-width="4" fill="none" stroke-dasharray="8,10" stroke-linecap="round"/>
-
-      <!-- direction arrows (small triangles at midpoints) -->
-      <polygon points="248,78  258,83  248,88"  fill="rgba(255,255,255,.5)"/>
-      <polygon points="192,136 182,141 192,146" fill="rgba(255,255,255,.5)"/>
-      <polygon points="192,190 202,195 192,200" fill="rgba(255,255,255,.5)"/>
-      <polygon points="192,246 182,251 192,256" fill="rgba(255,255,255,.5)"/>
-      <polygon points="192,302 202,307 192,312" fill="rgba(255,255,255,.5)"/>
-      <polygon points="192,358 182,363 192,368" fill="rgba(255,255,255,.5)"/>
-      <polygon points="192,414 202,419 192,424" fill="rgba(255,255,255,.5)"/>
-      <polygon points="192,464 182,469 192,474" fill="rgba(255,255,255,.5)"/>
-      <polygon points="192,512 202,517 192,522" fill="rgba(255,255,255,.5)"/>
-      <polygon points="192,556 182,561 192,566" fill="rgba(255,255,255,.5)"/>
-      <polygon points="192,600 202,605 192,610" fill="rgba(255,255,255,.5)"/>
-      <polygon points="192,642 182,647 192,652" fill="rgba(255,255,255,.5)"/>
-
-      <!-- scattered little flowers -->
-      <circle cx="160" cy="170" r="4" fill="#ffd06e" opacity=".5"/><circle cx="160" cy="170" r="1.4" fill="#e84a7a" opacity=".8"/>
-      <circle cx="220" cy="358" r="3.5" fill="#a0d8ff" opacity=".5"/><circle cx="220" cy="358" r="1.2" fill="white" opacity=".8"/>
-      <circle cx="160" cy="494" r="3.5" fill="#ff9ad4" opacity=".5"/><circle cx="160" cy="494" r="1.3" fill="#ffe066" opacity=".8"/>
-      <circle cx="240" cy="560" r="3" fill="#c8f0a0" opacity=".5"/><circle cx="240" cy="560" r="1" fill="#5a9e5a" opacity=".8"/>
-      <circle cx="165" cy="622" r="3" fill="#ffc8a0" opacity=".5"/><circle cx="165" cy="622" r="1" fill="#c05040" opacity=".8"/>
+      <!-- ══ DOTTED PATH — 11 segments S0→S11 ══ -->
+      <path d="M305,52  C280,66  140,76  75,82"   stroke="rgba(255,255,255,.72)" stroke-width="4" fill="none" stroke-dasharray="8,10" stroke-linecap="round"/>
+      <path d="M75,108  C100,122 255,134 305,138" stroke="rgba(255,255,255,.72)" stroke-width="4" fill="none" stroke-dasharray="8,10" stroke-linecap="round"/>
+      <path d="M305,164 C280,178 140,188 75,194"  stroke="rgba(255,255,255,.72)" stroke-width="4" fill="none" stroke-dasharray="8,10" stroke-linecap="round"/>
+      <path d="M75,220  C100,234 255,246 305,250" stroke="rgba(255,255,255,.72)" stroke-width="4" fill="none" stroke-dasharray="8,10" stroke-linecap="round"/>
+      <path d="M305,276 C280,290 140,302 75,306"  stroke="rgba(255,255,255,.72)" stroke-width="4" fill="none" stroke-dasharray="8,10" stroke-linecap="round"/>
+      <path d="M75,332  C100,346 255,358 305,362" stroke="rgba(255,255,255,.72)" stroke-width="4" fill="none" stroke-dasharray="8,10" stroke-linecap="round"/>
+      <path d="M305,388 C280,402 140,414 75,418"  stroke="rgba(255,255,255,.72)" stroke-width="4" fill="none" stroke-dasharray="8,10" stroke-linecap="round"/>
+      <path d="M75,444  C100,458 255,470 305,474" stroke="rgba(255,255,255,.72)" stroke-width="4" fill="none" stroke-dasharray="8,10" stroke-linecap="round"/>
+      <path d="M305,500 C280,514 140,526 75,530"  stroke="rgba(255,255,255,.72)" stroke-width="4" fill="none" stroke-dasharray="8,10" stroke-linecap="round"/>
+      <path d="M75,556  C100,570 255,582 305,586" stroke="rgba(255,255,255,.72)" stroke-width="4" fill="none" stroke-dasharray="8,10" stroke-linecap="round"/>
+      <path d="M305,612 C280,626 140,638 75,642"  stroke="rgba(255,255,255,.72)" stroke-width="4" fill="none" stroke-dasharray="8,10" stroke-linecap="round"/>
+      <!-- arrows -->
+      <polygon points="192,78  182,83  192,88"  fill="rgba(255,255,255,.5)"/>
+      <polygon points="192,134 202,139 192,144" fill="rgba(255,255,255,.5)"/>
+      <polygon points="192,190 182,195 192,200" fill="rgba(255,255,255,.5)"/>
+      <polygon points="192,246 202,251 192,256" fill="rgba(255,255,255,.5)"/>
+      <polygon points="192,302 182,307 192,312" fill="rgba(255,255,255,.5)"/>
+      <polygon points="192,358 202,363 192,368" fill="rgba(255,255,255,.5)"/>
+      <polygon points="192,414 182,419 192,424" fill="rgba(255,255,255,.5)"/>
+      <polygon points="192,470 202,475 192,480" fill="rgba(255,255,255,.5)"/>
+      <polygon points="192,526 182,531 192,536" fill="rgba(255,255,255,.5)"/>
+      <polygon points="192,582 202,587 192,592" fill="rgba(255,255,255,.5)"/>
+      <polygon points="192,638 182,643 192,648" fill="rgba(255,255,255,.5)"/>
+      <!-- small flowers -->
+      <circle cx="160" cy="120" r="4" fill="#ffd06e" opacity=".5"/><circle cx="160" cy="120" r="1.4" fill="#e84a7a" opacity=".8"/>
+      <circle cx="220" cy="300" r="3.5" fill="#a0d8ff" opacity=".5"/><circle cx="220" cy="300" r="1.2" fill="white" opacity=".8"/>
+      <circle cx="160" cy="460" r="3.5" fill="#ff9ad4" opacity=".5"/><circle cx="160" cy="460" r="1.3" fill="#ffe066" opacity=".8"/>
+      <circle cx="240" cy="520" r="3" fill="#c8f0a0" opacity=".5"/><circle cx="240" cy="520" r="1" fill="#5a9e5a" opacity=".8"/>
+      <circle cx="165" cy="580" r="3" fill="#ffc8a0" opacity=".5"/><circle cx="165" cy="580" r="1" fill="#c05040" opacity=".8"/>
     </svg>
 
     <!-- ══ STOPS — 12 cases réparties de haut en bas sans case Départ
@@ -388,7 +370,7 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;ov
     <div class="stop locked" id="stop-10" style="left:80.3%;top:85.4%"><div class="stop-bubble" id="sb-10">🥚</div><div class="stop-label" id="sl-10">11. Le Jardin zen</div></div>
     <div class="stop locked" id="stop-11" style="left:19.7%;top:93.4%"><div class="stop-bubble" id="sb-11">🥚</div><div class="stop-label" id="sl-11">12. Le Sentier</div></div>
 
-    <div class="map-bunny" id="map-bunny" style="left:50%;top:5.4%">🐰</div>
+    <div class="map-bunny" id="map-bunny" style="left:80.3%;top:5.4%">🐰</div>
   </div>
 
   <div class="prog-wrap">
@@ -537,22 +519,19 @@ const questions = [
     fb:["Bien vu ! En 🇸🇪 & 🇫🇮, les enfants se déguisent en sorcières le jeudi de Pâques 🧙✨","Pas cette fois ! C'est en Suède et Finlande que les sorcières sont à l'honneur 🧙","Non, c'est la Suède et la Finlande qui ont cette tradition originale 🧙","Pas l'Islande ! Ce sont la Suède et la Finlande 🇸🇪🇫🇮"],fbt:["good","fun","fun","fun"]}
 ];
 
-// left/top % for start + 12 stops + finish
 const stopPos = [
-  {l:"50%",    t:"5.4%"},   // start
-  {l:"80.3%",  t:"13.4%"},  // 0
-  {l:"19.7%",  t:"21.4%"},  // 1
-  {l:"80.3%",  t:"29.4%"},  // 2
-  {l:"19.7%",  t:"37.4%"},  // 3
-  {l:"80.3%",  t:"45.4%"},  // 4
-  {l:"19.7%",  t:"53.4%"},  // 5
-  {l:"80.3%",  t:"61.4%"},  // 6
-  {l:"19.7%",  t:"69.4%"},  // 7
-  {l:"80.3%",  t:"75.7%"},  // 8
-  {l:"19.7%",  t:"82%"},    // 9
-  {l:"80.3%",  t:"88.3%"},  // 10
-  {l:"19.7%",  t:"93.6%"},  // 11
-  {l:"50%",    t:"97.9%"},  // finish
+  {l:"80.3%", t:"5.4%"},   // 0 — Le Terrier
+  {l:"19.7%", t:"13.4%"},  // 1 — Le Ruisseau
+  {l:"80.3%", t:"21.4%"},  // 2 — Le Verger
+  {l:"19.7%", t:"29.4%"},  // 3 — La Forêt
+  {l:"80.3%", t:"37.4%"},  // 4 — Le Pré fleuri
+  {l:"19.7%", t:"45.4%"},  // 5 — La Clairière
+  {l:"80.3%", t:"53.4%"},  // 6 — La Fontaine
+  {l:"19.7%", t:"61.4%"},  // 7 — Le Bosquet
+  {l:"80.3%", t:"69.4%"},  // 8 — Le Nid secret
+  {l:"19.7%", t:"77.4%"},  // 9 — La Rosée
+  {l:"80.3%", t:"85.4%"},  // 10 — Le Jardin zen
+  {l:"19.7%", t:"93.4%"},  // 11 — Le Sentier
 ];
 
 const TIERS = [
@@ -568,7 +547,7 @@ function getTier(q){ return TIERS.findLastIndex(t => q >= t.at); }
 
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
 
-function startGame(){showScreen('screen-map');updateMap();moveBunny(1);}
+function startGame(){showScreen('screen-map');updateMap();}
 
 function updateMap(){
   for(let i=0;i<12;i++){
@@ -591,7 +570,6 @@ function updateMap(){
   const tier = getTier(currentQ);
   const tierLabel = tier >= 0 ? ` · ${TIERS[tier].pct} gagné 🎁` : '';
   document.getElementById('prog-label').textContent=`${currentQ} / 12 étapes complétées${tierLabel}`;
-  // update tier badges
   TIERS.forEach((t,i)=>{
     const badge = document.getElementById(`tier-badge-${i}`);
     if(!badge) return;
@@ -605,6 +583,8 @@ function updateMap(){
       badge.style.boxShadow='none';
     }
   });
+  // lapin toujours sur la case active (currentQ), ou dernière si terminé
+  moveBunny(Math.min(currentQ, 11));
 }
 
 function moveBunny(idx){
@@ -661,16 +641,14 @@ function selectAnswer(qIdx,optIdx,btn){
     const newTier = getTier(currentQ);
 
     if(currentQ >= 12){
-      // parcours complet !
-      showScreen('screen-map'); updateMap(); moveBunny(13);
+      showScreen('screen-map'); updateMap();
       setTimeout(()=>showFinal(12), 1100);
     } else if(newTier > currentTier){
-      // palier atteint → show map avec notification puis continuer
       currentTier = newTier;
-      showScreen('screen-map'); updateMap(); moveBunny(currentQ+1);
+      showScreen('screen-map'); updateMap();
       showTierNotif(TIERS[newTier]);
     } else {
-      showScreen('screen-map'); updateMap(); moveBunny(currentQ+1);
+      showScreen('screen-map'); updateMap();
     }
   },1900);
 }
