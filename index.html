@@ -399,6 +399,9 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;ov
     <div class="q-text" id="q-text"></div>
     <div class="q-opts" id="q-opts"></div>
     <div class="q-fb" id="q-fb"></div>
+    <button id="btn-continue" onclick="continueGame()" style="display:none;width:100%;margin-top:.9rem;background:linear-gradient(135deg,var(--sage),var(--sage-dark));color:white;border:none;padding:.85rem;border-radius:13px;font-family:'Nunito',sans-serif;font-size:.95rem;font-weight:800;cursor:pointer;transition:all .2s;">
+      Continuer →
+    </button>
   </div>
 </div>
 
@@ -410,14 +413,14 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;ov
   <p class="final-sub" id="final-sub">Félicitations 🐰✨ Voici ta récompense :</p>
   <div class="promo-reveal">
     <div class="promo-label">Ton code de réduction</div>
-    <div class="promo-code" id="final-code">—</div>
+    <div class="promo-code" id="final-code">...</div>
     <div class="promo-desc" id="final-desc"></div>
     <div class="promo-valid">Valable jusqu'au 30 avril · Non cumulable</div>
-    <button class="copy-btn" id="copy-btn" onclick="copyCode(this)">📋 Copier le code</button>
+    <button class="copy-btn" id="copy-btn" style="display:none"></button>
   </div>
   <div class="eggs-row" id="final-eggs"></div>
   <p style="text-align:center;font-size:.78rem;opacity:.55;max-width:280px;margin-bottom:1.1rem">Présente ce code lors de ta réservation ou au salon. À très vite 🌿</p>
-  <button class="btn-white" onclick="window.open('https://www.zenattitude59.com/','_blank')">📞 Réserver maintenant</button>
+  <button class="btn-white" onclick="window.open('https://www.zenattitude59.com/','_blank')" style="display:none"></button>
 </div>
 
 <!-- ══ GAME OVER ══ -->
@@ -431,17 +434,18 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;ov
   <div id="gameover-promo" style="display:none">
     <div class="promo-reveal" style="background:rgba(122,158,126,.12);border-color:var(--sage-light);">
       <div class="promo-label" style="color:var(--sage-dark)">Ton code gagné</div>
-      <div class="promo-code" id="gameover-code" style="color:var(--gold)">—</div>
+      <div class="promo-code" id="gameover-code" style="color:var(--gold)">...</div>
       <div class="promo-desc" id="gameover-desc" style="color:var(--deep)"></div>
       <div class="promo-valid" style="color:#888">Valable jusqu'au 30 avril · Non cumulable</div>
-      <button class="copy-btn" style="background:var(--sage);border-color:var(--sage-dark)" id="gameover-copy" onclick="copyCodeById('gameover-code',this)">📋 Copier le code</button>
+      <button class="copy-btn" id="gameover-copy" style="display:none"></button>
     </div>
   </div>
 
   <!-- aucun palier -->
-  <div id="gameover-nopromo" style="display:none;text-align:center;background:rgba(255,255,255,.7);border-radius:16px;padding:1.2rem 1.5rem;max-width:300px;width:100%;margin-bottom:1rem">
-    <p style="font-size:.9rem;color:var(--deep);font-weight:700">Tu n'as pas encore atteint de palier 😊</p>
-    <p style="font-size:.82rem;color:#777;margin-top:.4rem">Reviens vite pour tenter ta chance et décrocher au moins <strong>−10%</strong> en répondant aux 3 premières questions !</p>
+  <div id="gameover-nopromo" style="display:none;text-align:center;background:linear-gradient(135deg,#fff9ee,#ffefc4);border-radius:16px;padding:1.4rem 1.5rem;max-width:300px;width:100%;margin-bottom:1rem;border:2px dashed var(--gold);box-shadow:0 4px 16px rgba(201,169,110,.2)">
+    <div style="font-size:2.2rem;margin-bottom:.4rem">🎁</div>
+    <p style="font-size:.95rem;color:var(--deep);font-weight:800;margin-bottom:.3rem">Un cadeau surprise t'attend !</p>
+    <p style="font-size:.82rem;color:#888;line-height:1.5">Viens le récupérer au salon lors de ta prochaine visite chez Zen Attitude 59. On a hâte de te voir 🌿</p>
   </div>
 
   <div class="eggs-row" id="gameover-eggs" style="margin:.5rem 0"></div>
@@ -452,7 +456,7 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);min-height:100vh;ov
     <div id="tiers-recap" style="display:flex;flex-direction:column;gap:.3rem"></div>
   </div>
 
-  <button class="btn-primary" onclick="window.open('https://www.zenattitude59.com/','_blank')">📞 Réserver maintenant</button>
+  <button class="btn-primary" onclick="window.open('https://www.zenattitude59.com/','_blank')" style="display:none"></button>
 </div>
 
 <script>
@@ -466,7 +470,7 @@ const questions = [
   { egg:"✨", zone:"Le Ruisseau", zoneBg:"#5a8a60",
     text:"Quelle est la spécialité phare de Zen Attitude 59 ?",
     opts:[{e:"💆",l:"Le massage suédois"},{e:"🕯️",l:"Le massage aux pierres chaudes"},{e:"✨",l:"Le massage sensoriel"},{e:"🌿",l:"Le massage thaïlandais"}],
-    fb:["Pas tout à fait ! La spécialité de Zen Attitude 59 c'est le massage sensoriel ✨","Bonne idée mais non ! C'est le massage sensoriel la signature du salon ✨","Exactement ! Le massage sensoriel est la signature de Zen Attitude 59 — une expérience unique qui éveille tous vos sens ✨","Pas cette fois ! La spécialité maison c'est le massage sensoriel ✨"],fbt:["fun","fun","good","fun"]},
+    fb:["Pas tout à fait ! La spécialité de Zen Attitude 59 c'est le massage sensoriel ✨","Bonne idée mais non ! C'est le massage sensoriel la signature du salon ✨","Exactement ! Le massage sensoriel est la signature de Zen Attitude 59, une expérience unique qui éveille tous vos sens ✨","Pas cette fois ! La spécialité maison c'est le massage sensoriel ✨"],fbt:["fun","fun","good","fun"]},
   // 2 — Le Verger — PÂQUES
   { egg:"🍫", zone:"Le Verger", zoneBg:"#6a7aae",
     text:"D'où vient la tradition des œufs en chocolat ?",
@@ -542,12 +546,40 @@ const TIERS = [
 ];
 
 let currentQ = 0, answering = false, currentTier = -1;
+let lastCorrect = false;
 
 function getTier(q){ return TIERS.findLastIndex(t => q >= t.at); }
 
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
 
-function startGame(){showScreen('screen-map');updateMap();}
+// ── LOCALSTORAGE : vérifie si le joueur a déjà joué au chargement ──
+window.addEventListener('DOMContentLoaded', () => {
+  const played = localStorage.getItem('zenattitude_played');
+  if(played){
+    const data = JSON.parse(played);
+    // reconstruit l'écran de fin selon ce qui a été sauvegardé
+    if(data.finished){
+      showFinal(12, true);
+    } else {
+      showGameOver(data.qCount, true);
+    }
+  }
+});
+
+function saveAndEnd(type, qCount){
+  localStorage.setItem('zenattitude_played', JSON.stringify({
+    type, qCount, finished: type === 'final', date: new Date().toISOString()
+  }));
+}
+
+function startGame(){
+  const played = localStorage.getItem('zenattitude_played');
+  if(played){
+    // déjà joué, on ne fait rien
+    return;
+  }
+  showScreen('screen-map');updateMap();
+}
 
 function updateMap(){
   for(let i=0;i<12;i++){
@@ -624,33 +656,44 @@ function selectAnswer(qIdx,optIdx,btn){
   const q=questions[qIdx];
   const fb=document.getElementById('q-fb');
   const isCorrect = q.fbt[optIdx] === 'good';
+  lastCorrect = isCorrect;
 
   fb.textContent=q.fb[optIdx];
   fb.className='q-fb '+(q.fbt[optIdx]||'fun');
 
-  setTimeout(()=>{
-    answering=false;
+  // affiche le bouton continuer
+  const btnContinue = document.getElementById('btn-continue');
+  btnContinue.style.display = 'block';
+  btnContinue.textContent = isCorrect ? 'Continuer →' : 'Voir mon score';
+  btnContinue.style.background = isCorrect
+    ? 'linear-gradient(135deg,var(--sage),var(--sage-dark))'
+    : 'linear-gradient(135deg,#c05050,#8a2020)';
+}
 
-    if(!isCorrect){
-      // mauvaise réponse → game over
-      showGameOver(currentQ);
-      return;
-    }
+function continueGame(){
+  document.getElementById('btn-continue').style.display='none';
+  answering=false;
 
-    currentQ++;
-    const newTier = getTier(currentQ);
+  if(!lastCorrect){
+    saveAndEnd('gameover', currentQ);
+    showGameOver(currentQ);
+    return;
+  }
 
-    if(currentQ >= 12){
-      showScreen('screen-map'); updateMap();
-      setTimeout(()=>showFinal(12), 1100);
-    } else if(newTier > currentTier){
-      currentTier = newTier;
-      showScreen('screen-map'); updateMap();
-      showTierNotif(TIERS[newTier]);
-    } else {
-      showScreen('screen-map'); updateMap();
-    }
-  },1900);
+  currentQ++;
+  const newTier = getTier(currentQ);
+
+  if(currentQ >= 12){
+    saveAndEnd('final', 12);
+    showScreen('screen-map'); updateMap();
+    setTimeout(()=>showFinal(12), 1100);
+  } else if(newTier > currentTier){
+    currentTier = newTier;
+    showScreen('screen-map'); updateMap();
+    showTierNotif(TIERS[newTier]);
+  } else {
+    showScreen('screen-map'); updateMap();
+  }
 }
 
 // notification palier atteint (toast)
@@ -686,18 +729,20 @@ function showTierNotif(tier){
   }, 2800);
 }
 
-function showFinal(qCount){
+function showFinal(qCount, fromStorage=false){
   const tier = getTier(qCount);
   const t = TIERS[tier];
   document.getElementById('final-code').textContent = t.code;
   document.getElementById('final-desc').textContent = `${t.pct} sur ton prochain massage 🎉`;
   document.getElementById('copy-btn').setAttribute('data-code', t.code);
 
-  // message selon palier
   if(tier === 3){
     document.getElementById('final-title').innerHTML = 'Parfait ! 12/12<br>Tu es un·e expert·e !';
     document.getElementById('final-sub').textContent = '🏆 Le grand chelem ! Voici ta récompense maximale :';
     document.getElementById('final-confetti').textContent = '🏆';
+  }
+  if(fromStorage){
+    document.getElementById('final-sub').textContent = 'Tu as déjà joué ! Voici ton code obtenu :';
   }
 
   const eggsEl=document.getElementById('final-eggs');
@@ -709,7 +754,7 @@ function showFinal(qCount){
   showScreen('screen-final');
 }
 
-function showGameOver(qCount){
+function showGameOver(qCount, fromStorage=false){
   const tier = getTier(qCount);
 
   // eggs déjà collectés
@@ -741,11 +786,15 @@ function showGameOver(qCount){
     document.getElementById('gameover-nopromo').style.display='none';
     document.getElementById('gameover-code').textContent = t.code;
     document.getElementById('gameover-desc').textContent = `${t.pct} sur ton prochain massage`;
-    document.getElementById('gameover-sub').textContent = `Tu avais atteint le palier ${t.pct} — voici ton code ! 🎁`;
+    document.getElementById('gameover-sub').textContent = fromStorage
+      ? `Tu as déjà joué ! Voici le code que tu avais gagné 🎁`
+      : `Tu avais atteint le palier ${t.pct} ! Voici ton code 🎁`;
   } else {
     document.getElementById('gameover-promo').style.display='none';
     document.getElementById('gameover-nopromo').style.display='block';
-    document.getElementById('gameover-sub').textContent = `Dommage ! Retente ta chance pour décrocher une réduction 💪`;
+    document.getElementById('gameover-sub').textContent = fromStorage
+      ? `Tu as déjà joué ! Voici ta récompense surprise 🎁`
+      : `Dommage ! Mais on a quand même une surprise pour toi 🎁`;
   }
   showScreen('screen-gameover');
 }
